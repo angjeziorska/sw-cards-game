@@ -6,6 +6,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { PersonModule } from "./modules/person/person.module";
+import { GameModule } from "./modules/game/game.module";
 
 @Module({
   imports: [
@@ -13,8 +14,12 @@ import { PersonModule } from "./modules/person/person.module";
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/schema.gql"),
       installSubscriptionHandlers: true,
+      subscriptions: {
+        "graphql-ws": true,
+      },
     }),
     PersonModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

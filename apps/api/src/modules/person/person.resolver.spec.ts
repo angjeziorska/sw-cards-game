@@ -1,16 +1,12 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { PrismaService } from "../prisma/prisma.service";
+import { NotFoundException } from "@nestjs/common";
 import { PersonResolver } from "./person.resolver";
-
-const prismaServiceMock = {
-  person: {
-    count: jest.fn(),
-    findMany: jest.fn(),
-  },
-};
+import { PrismaService } from "../prisma/prisma.service";
+import { PersonType } from "./types/person.type";
 
 describe("PersonResolver", () => {
   let personResolver: PersonResolver;
+  let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,27 +14,33 @@ describe("PersonResolver", () => {
         PersonResolver,
         {
           provide: PrismaService,
-          useValue: prismaServiceMock,
+          useValue: {
+            person: {
+              findUnique: jest.fn(),
+            },
+          },
         },
       ],
     }).compile();
 
     personResolver = module.get<PersonResolver>(PersonResolver);
+    prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  describe("getRandom", () => {
-    it("should return a random person", async () => {
+  describe("get", () => {
+    it("should return a PersonType object when a valid ID is provided", async () => {
       const mockPerson = {
-        id: "1",
-        height: 175,
+        id: 1,
+        height: 180,
         name: "John Doe",
         mass: 70,
       };
 
-      prismaServiceMock.person.count.mockResolvedValue(1);
-      prismaServiceMock.person.findMany.mockResolvedValue([mockPerson]);
+      (prismaService.person.findUnique as jest.Mock).mockResolvedValue(
+        mockPerson
+      );
 
-      const result = await personResolver.getRandom();
+      const result: PersonType = await personResolver.get("1");
 
       expect(result).toEqual({
         id: mockPerson.id,
@@ -46,6 +48,14 @@ describe("PersonResolver", () => {
         name: mockPerson.name,
         mass: mockPerson.mass,
       });
+    });
+
+    it("should throw a NotFoundException when an invalid ID is provided", async () => {
+      (prismaService.person.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(personResolver.get("invalidId")).rejects.toThrow(
+        NotFoundException
+      );
     });
   });
 });

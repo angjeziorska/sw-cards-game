@@ -13,8 +13,21 @@ type PersonType {
   mass: Float!
 }
 
+type StarshipType {
+  id: String!
+  crew: Float!
+  name: String!
+  passengers: Float!
+}
+
+type GameType {
+  person: PersonType!
+  starship: StarshipType!
+}
+
 type Query {
-  randomPerson: PersonType!
+  person(id: Int!): PersonType!
+  getCards: GameType!
 }
 
 type Mutation {

@@ -1,4 +1,5 @@
-import { Query, Resolver } from "@nestjs/graphql";
+import { NotFoundException } from "@nestjs/common";
+import { Args, Int, Query, Resolver } from "@nestjs/graphql";
 import { PrismaService } from "../prisma/prisma.service";
 import { PersonType } from "./types/person.type";
 
@@ -6,16 +7,16 @@ import { PersonType } from "./types/person.type";
 export class PersonResolver {
   constructor(private prisma: PrismaService) {}
 
-  @Query(() => PersonType, { name: "randomPerson" })
-  async getRandom() {
-    const itemCount = await this.prisma.person.count();
-    const skip = Math.max(0, Math.floor(Math.random() * itemCount) - 1);
-
-    const [person] = await this.prisma.person.findMany({
-      skip,
-      take: 1,
-      where: { deletedAt: null },
+  @Query(() => PersonType, { name: "person" })
+  async get(@Args("id", { type: () => Int }) id: string) {
+    const person = await this.prisma.person.findUnique({
+      where: { id, deletedAt: null },
     });
+
+    // for better UX it could just return a message
+    if (!person) {
+      throw new NotFoundException(`Person ${id} does not exist.`);
+    }
     return {
       id: person.id,
       height: person.height,
