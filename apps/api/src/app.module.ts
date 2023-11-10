@@ -14,9 +14,6 @@ import { GameModule } from "./modules/game/game.module";
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/schema.gql"),
       installSubscriptionHandlers: true,
-      subscriptions: {
-        "graphql-ws": true,
-      },
     }),
     PersonModule,
     GameModule,
