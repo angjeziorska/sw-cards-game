@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id        String    @id @default(cuid())
+  height    Int
+  name      String    @unique
+  mass      Int
+  deletedAt DateTime? @db.Timestamptz()
+}
+
+model Starship {
+  id         String    @id @default(cuid())
+  crew       Int
+  name       String
+  passengers Int
+  deletedAt  DateTime? @db.Timestamptz()
+}

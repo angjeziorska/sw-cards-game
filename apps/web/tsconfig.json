@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "@sw-cards-game/tsconfig/nextjs.json",
   "compilerOptions": {
     "plugins": [{ "name": "next" }]
   },

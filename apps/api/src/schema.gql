@@ -1,0 +1,24 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BaseResponseType {
+  message: String
+}
+
+type PersonType {
+  id: String!
+  height: Float!
+  name: String!
+  mass: Float!
+}
+
+type Query {
+  randomPerson: PersonType!
+}
+
+type Mutation {
+  addPerson(height: Float!, name: String!, mass: Float!): BaseResponseType!
+  updatePerson(id: String!, height: Float, name: String, mass: Float): BaseResponseType!
+  deletePerson(id: String!): BaseResponseType!
+}
