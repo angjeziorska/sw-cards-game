@@ -14,7 +14,7 @@ export class GameResolver {
 
     It would make perfect sense if there was a 3rd type of a card to pull
   */
-  @Query(() => GameType, { name: "getCards" })
+  @Query(() => GameType, { name: "cards" })
   async getCards() {
     const personCount = await this.prisma.person.count();
     const starshipCount = await this.prisma.starship.count();

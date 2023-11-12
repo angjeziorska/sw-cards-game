@@ -27,7 +27,7 @@ type GameType {
 
 type Query {
   person(id: Int!): PersonType!
-  getCards: GameType!
+  cards: GameType!
 }
 
 type Mutation {
