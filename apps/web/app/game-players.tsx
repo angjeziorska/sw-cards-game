@@ -21,6 +21,7 @@ export function GamePlayers() {
           <GameCard
             name={drawnCards[key].name}
             value={drawnCards[key][winningAttributes[key]].toString()}
+            attribute={winningAttributes[key]}
           />
         </Box>
       ))}
