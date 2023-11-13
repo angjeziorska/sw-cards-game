@@ -7,9 +7,13 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "build:packages": {},
+    "db:generate": {
+      "inputs": ["apps/api/prisma/schema.prisma"],
+      "cache": false
+    },
     "lint": {},
     "dev": {
-      "dependsOn": ["^build:packages"],
+      "dependsOn": ["db:generate", "^build:packages"],
       "cache": false,
       "persistent": true
     }

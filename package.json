@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:packages": "turbo run build --filter=packages/*",
+    "db:generate": "turbo run db:generate",
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint"
